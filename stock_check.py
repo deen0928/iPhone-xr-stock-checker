@@ -9,14 +9,29 @@ LINE_USER_ID = os.environ["LINE_USER_ID"]
 
 def check_stock():
     headers = {
-        "User-Agent": "Mozilla/5.0"
+        "User-Agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/140.0.0.0 Safari/537.36"
+        ),
+        "Accept": (
+            "text/html,application/xhtml+xml,application/xml;q=0.9,"
+            "image/avif,image/webp,*/*;q=0.8"
+        ),
+        "Accept-Language": "ja-JP,ja;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Referer": "https://mvno.geo-mobile.jp/",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
     }
 
     response = requests.get(
         PRODUCT_URL,
         headers=headers,
-        timeout=15
+        timeout=20
     )
+
+    print("HTTP status:", response.status_code)
+
     response.raise_for_status()
 
     html = response.text
@@ -48,6 +63,7 @@ def send_line(message):
         json=data,
         timeout=15
     )
+
     response.raise_for_status()
 
 
